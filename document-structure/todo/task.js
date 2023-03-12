@@ -4,26 +4,27 @@ const tasksList = document.getElementById("tasks__list");
 
 btnAdd.addEventListener("click", e => {
     e.preventDefault();
-    if (!taskInput.value == " " && taskInput.value.length > 1) {
+    
+    if (taskInput.value.trim()) {
+
+        // --- решение: insertAdjacentHTML------------------------------------------------------------------------
+        const tasksList = document.getElementById("tasks__list");
         
-        //  добавление задачи ()
-        tasksList.innerHTML += `                                 
-            <div class="task">
+        tasksList.insertAdjacentHTML("beforeEnd", 
+            `<div class="task">
                 <div class="task__title">
                     ${taskInput.value}
                 </div>
                 <a href="#" class="task__remove">&times;</a>
-            </div>
-        `;
+            </div>`
+        );
 
-        // const arrElemRemove = tasksList.querySelectorAll(".task__remove");      //  удаление задачи ()
-        // Array.from(arrElemRemove).forEach( element => {
-        Array.from(tasksList.querySelectorAll(".task__remove")).forEach( element => {
-            element.addEventListener("click", e => {
-                e.preventDefault();
-                element.closest(".task").remove();
-            })
-        });
+        const elemRemove = tasksList.lastChild.querySelector(".task__remove");
+        elemRemove.addEventListener("click", e => {
+            e.preventDefault();
+            e.target.closest(".task").remove();
+        })
+        //--------------------------------------------------------------------------------------------------------
         
         // --- решение: создание элемента ------------------------------------------------------------------------
         // const newTask = document.createElement("div");      //  добавление задачи (создание элемента)
