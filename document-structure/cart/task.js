@@ -33,7 +33,11 @@ productAdd.forEach( elem => {
         }
 
         const id = elem.closest(".product").dataset.id;
-        if ( !Array.from(cartProducts.querySelectorAll(".cart__product")).some( elemCard => elemCard.dataset.id === id) ) {
+        
+        if ( Array.from(cartProducts.querySelectorAll(".cart__product")).find( elemCard => elemCard.dataset.id === id) ) {
+            const addedProduct = Array.from(cartProducts.querySelectorAll(".cart__product")).find( elemCard => elemCard.dataset.id === id);     //  элемент с повторно добавляемым id
+            addedProduct.querySelector(".cart__product-count").textContent = Number(addedProduct.querySelector(".cart__product-count").textContent) + Number(elem.closest(".product__quantity").querySelector(".product__quantity-value").textContent);
+        } else {
 
             cartProducts.insertAdjacentHTML("beforeEnd",
                 `<div class="cart__product" data-id=${elem.closest(".product").dataset.id}>
@@ -52,10 +56,6 @@ productAdd.forEach( elem => {
                     document.querySelector(".cart").classList.remove("cart__active");
                 }
             })
-
-        } else {                                //  увеличиваем количество
-            const addedProduct = Array.from(cartProducts.querySelectorAll(".cart__product")).find( elemCard => elemCard.dataset.id === id);     //  элемент с повторно добавляемым id
-            addedProduct.querySelector(".cart__product-count").textContent = Number(addedProduct.querySelector(".cart__product-count").textContent) + Number(elem.closest(".product__quantity").querySelector(".product__quantity-value").textContent);
         }
     } )
 } )

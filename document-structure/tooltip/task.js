@@ -7,6 +7,10 @@ hasTooltip.forEach( elem => {
         // const title = elem.getAttribute("title");   //  прочитать атрибут title
 
         if (document.querySelector(".tooltip_active")) {           //  != null
+            if ( document.querySelector(".tooltip_active").previousSibling === e.target ) {
+                document.querySelector(".tooltip_active").remove();
+                return;
+            }
             document.querySelector(".tooltip_active").remove();
         }
 
@@ -24,4 +28,5 @@ hasTooltip.forEach( elem => {
         
         tooltip.classList.add("tooltip_active");   //  добавить подсказке класс "tooltip_active"
     })
-})
+}) 
+
