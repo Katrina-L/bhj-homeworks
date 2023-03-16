@@ -6,25 +6,16 @@ const messagesRobot = [
     "Давайте как-нибудь сами решайте свои вопросы",
     "К счастью, Ваш вопрос не стоит нашего внимания",
 ];
-const chatWidget = document.querySelector(".chat-widget")
+const chatWidget = document.querySelector(".chat-widget");
 const chatWidgetSide = document.querySelector(".chat-widget__side");
 const chatWidgetInput = document.getElementById("chat-widget__input");
 const messages = document.getElementById("chat-widget__messages");
 const messagesContainer = document.querySelector(".chat-widget__messages-container");
+let timerIdQuestion;
+let time = 30000;
 
 chatWidgetSide.addEventListener("click", () => {
     chatWidget.classList.add("chat-widget_active");
-    // if ( chatWidget.classList.contains("chat-widget_active") && !chatWidgetInput.addEventListener() ) {
-    //     let timerIdQuestion = setTimeout( () => {
-    //         messages.innerHTML += `
-    //         <div class="message">
-    //             <div class="message__time">${getCurrentTime()}</div>
-    //             <div class="message__text">Чё нада?</div>
-    //         </div>
-    //         `;
-    //         messages.scrollIntoView(false);
-    //     }, 2000 );
-    // }
 });
 
 chatWidgetInput.addEventListener("keydown", e => {
@@ -47,7 +38,15 @@ chatWidgetInput.addEventListener("keydown", e => {
         messages.scrollIntoView(false);
         // lastMessageScroll("smooth");
     }
-})  
+});  
+
+chatWidgetInput.addEventListener("focus", () => {
+    stopAutoAnswer();
+});
+
+chatWidgetInput.addEventListener("blur", () => {
+    startAutoAnswer();
+});
 
 function getCurrentTime() {
     let date = new Date();
@@ -55,12 +54,34 @@ function getCurrentTime() {
     let minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
     let currentTime = `${hours}:${minutes}`;
     return currentTime;
-}
+};
 
 function answerRobot() {
     let messagesRobotIndex = Math.floor(Math.random() * messagesRobot.length);
     return messagesRobot[messagesRobotIndex];
-}
+};
+
+function startAutoAnswer() {
+    timerIdQuestion = setTimeout( () => {
+        messages.innerHTML += `
+        <div class="message">
+            <div class="message__time">${getCurrentTime()}</div>
+            <div class="message__text">Эй, Вы где?</div>
+        </div>
+        `;
+        messages.scrollIntoView(false);
+        timerIdQuestionRepeate();
+    }, time );
+};
+
+let timerIdQuestionRepeate = function() {
+    startAutoAnswer();
+    messages.scrollIntoView(false);
+};
+
+function stopAutoAnswer() {
+    clearTimeout(timerIdQuestion);
+};
 
 // function lastMessageScroll(b) {
 //     var lastMessageVisible = document.getElementById("chat-widget__messages");
