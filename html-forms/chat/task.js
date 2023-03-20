@@ -19,7 +19,7 @@ chatWidgetSide.addEventListener("click", () => {
 });
 
 chatWidgetInput.addEventListener("keydown", e => {
-    if ( chatWidgetInput.value !== "" && e.code === "Enter" ) {
+    if ( chatWidgetInput.value.trim() && e.code === "Enter" ) {
         messages.innerHTML += `
         <div class="message message_client">
             <div class="message__time">${getCurrentTime()}</div>
@@ -37,6 +37,8 @@ chatWidgetInput.addEventListener("keydown", e => {
         `;
         messages.scrollIntoView(false);
         // lastMessageScroll("smooth");
+    } else if ( chatWidgetInput.value.trim() === "" ) {
+        chatWidgetInput.value = "";
     }
 });  
 
